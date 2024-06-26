@@ -9,7 +9,7 @@
         <div class="col-8 ps-5 text-center">
           <div class="mb-3 row">
             <label class="col-5 col-form-label p-0"
-              >Select Your Preferred Design</label
+              >Sel Preferred Design</label
             >
             <div class="col-7">
               <div class="form-check form-check-inline">
