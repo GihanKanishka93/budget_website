@@ -24,7 +24,7 @@ class PaymentController extends Controller
         $type = '';
         $amount = 0;
         $type = $request->query('type');
-        $amount = ($type == 'single') ? 115 : (($type == 'multi') ? 192 : 0);
+        $amount = ($type == 'single') ? 253 : (($type == 'multi') ? 422 : 0);
         $url = '';
         $url = $this->ewayPayment($amount);
 
