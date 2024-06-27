@@ -189,5 +189,12 @@ body {
     right: 7px;
 } */
 .navbar img{
-    width: 20%;
+    width: 40%;
+}
+
+.header_text {
+    margin: -20px 0 70px 0;
+}
+.header_text p {
+  font-size: 14px;
 }
