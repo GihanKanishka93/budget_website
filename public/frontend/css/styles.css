@@ -191,3 +191,10 @@ body {
 .navbar img{
     width: 20%;
 }
+
+.header_text {
+    margin: -20px 0 70px 0;
+}
+.header_text p {
+  font-size: 14px;
+}

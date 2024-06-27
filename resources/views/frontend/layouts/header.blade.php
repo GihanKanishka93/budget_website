@@ -2,7 +2,9 @@
     <div class="container-fluid text-center">
         <a class="navbar-brand m-auto" href="#">
             <img src="./frontend/images/logo.png" class="d-inline-block align-top" alt="">
-            Budget Website
         </a>
     </div>
 </nav>
+
+
+

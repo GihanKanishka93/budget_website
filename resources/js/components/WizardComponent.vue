@@ -1,8 +1,15 @@
 <template>
   <div class="container text-start mb-5">
+
     <form action="#">
       <div class="row justify-content-md-center formbold-form-step-1 wizard-form active" step-id="1">
-        
+        <div class="header_text">
+      <center>
+        <h4>Welcome to Budget Website Development Dashboard</h4>
+        <p>Please take 20 minutes to complete this form. Your thorough input is appreciated.</p>
+      </center>
+    </div>
+
         <div class="col-12 text-center">
           <img src="/frontend/images/design.png" class="img-fluid mb-4" />
         </div>
@@ -112,7 +119,7 @@
                     class="form-control form-control-sm"
                   />
                 </label>
-              </div>           
+              </div>
             </div>
           </div>
           <div class="mb-3 row">
@@ -313,13 +320,13 @@
           </div>
           <div class="mb-3 row">
             <label class="col-4 col-form-label">Ethnicities</label>
-            <div class="col-6">   
+            <div class="col-6">
               <input
                 v-model="formData['ethnicity']"
                 type="text"
                 class="form-control form-control-sm"
                 name="professions"
-              />        
+              />
             </div>
           </div>
           <div class="mb-3 row">
