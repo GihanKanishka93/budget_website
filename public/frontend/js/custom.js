@@ -1,3 +1,4 @@
+
 $(document).on("click", ".formbold-next", function(){
     let stepId = $('.wizard-form.active').attr('step-id');
     $('.formbold-back-btn').addClass("active");
@@ -14,7 +15,13 @@ $(document).on("click", ".formbold-next", function(){
         $('.formbold-back-btn').removeClass("active");
         $('.formbold-edit-btn').show(); 
     }
+
+    
+    if(stepId==2) {
+        // $(".formbold-next").addClass("disabled");
+    }
 });
+
 
 $(document).on("click", ".formbold-back-btn", function(){
     let stepId = $('.wizard-form.active').attr('step-id');

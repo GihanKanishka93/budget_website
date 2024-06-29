@@ -31,7 +31,14 @@
             ></textarea>
           </div>
         </div>
-        <button v-if="testimonials.length>count" type="button" class="btn btn-danger btn-sm my-2 removeLogo" @click="removeTest(index)">Remove</button>
+        <button
+          v-if="testimonials.length > count"
+          type="button"
+          class="btn btn-danger btn-sm my-2 removeLogo"
+          @click="removeTest(index)"
+        >
+          Remove
+        </button>
       </div>
     </div>
     <button type="button" class="btn btn-primary btn-sm my-2" @click="addItem">
@@ -49,12 +56,14 @@ export default {
       company: "",
       text: "",
     },
+    validateField: false,
   }),
-  props: ["testimonials"],
+  props: ["testimonials", "testimonialValidate"],
   mounted() {
     for (let index = 0; index < this.count; index++) {
       this.testimonials.push({ ...this.testimonialObj });
     }
+    this.applyTestimonialValidateWatcher();
   },
   methods: {
     addItem() {
@@ -62,6 +71,26 @@ export default {
     },
     removeTest(index) {
       this.testimonials.splice(index, 1);
+    },
+    validate() {
+      if (
+        this.testimonials[0]?.customer != "" &&
+        this.testimonials[0]?.company != "" &&
+        this.testimonials[0]?.text != ""
+      ) {
+        this.validateField = true;
+      } else {
+        this.validateField = false;
+      }
+      this.$emit("update:testimonialValidate", this.validateField);
+    },
+    applyTestimonialValidateWatcher() {
+      this.$watch("testimonials", {
+        handler: function () {
+          this.validate();
+        },
+        deep: true,
+      });
     },
   },
 };
