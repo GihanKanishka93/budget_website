@@ -3,7 +3,9 @@
     <h5 class="card-title text-start">Services/Products</h5>
     <div class="form-text mb-2">
       Describe this service in less than 50 words in a way customers will be
-      attracted to this service
+      attracted to this service.
+      <br>
+      Please add details of at least 1 product or service.
     </div>
     <form class="text-start">
       <div v-for="(item, index) in services" :key="index" class="card mb-4">
