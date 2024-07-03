@@ -37,7 +37,7 @@ class PaymentController extends Controller
 
         $apiKey = env('EWAY_API_KEY');
         $apiPassword = env('EWAY_API_PASSWORD');
-        $apiEndpoint = 'Sandbox';
+        $apiEndpoint = 'Production';
         $client = \Eway\Rapid::createClient($apiKey, $apiPassword, $apiEndpoint);
 
         $transaction = [
@@ -51,6 +51,7 @@ class PaymentController extends Controller
         $response = $client->createTransaction(\Eway\Rapid\Enum\ApiMethod::RESPONSIVE_SHARED, $transaction);
         $sharedURL = '';
         $transID = '';
+
         if (!$response->getErrors()) {
             $returnData = $response->SharedPaymentUrl;
         } else {
@@ -67,10 +68,11 @@ class PaymentController extends Controller
 
         //echo $accessCode;
 
+
         // Make an API call to eWAY to retrieve transaction details
         $apiKey = env('EWAY_API_KEY');
         $apiPassword = env('EWAY_API_PASSWORD');
-        $apiEndpoint = \Eway\Rapid\Client::MODE_SANDBOX;
+        $apiEndpoint = \Eway\Rapid\Client::MODE_PRODUCTION;
 
         // Create the eWAY Client
         $client = \Eway\Rapid::createClient($apiKey, $apiPassword, $apiEndpoint);
@@ -119,6 +121,11 @@ class PaymentController extends Controller
 
         ];
         $this->updatePayment($paymentData);
+
+        if ($paymentStatus == false && $authorisationCode == null) {
+            return redirect('https://netstripes.com/budget-website-design/');
+        }
+
         return redirect('https://web.netstripes.com/');
 
     }
@@ -155,45 +162,65 @@ class PaymentController extends Controller
         $payment->phone_number = $paymentData['phone'];
 
         $payment->save();
-        $status = $payment->payment_status == 1 ? 'Approved' : 'Rejected';
+        $status = $payment->payment_status == 1 ? 'Approved' : 'Declined';
 
-        if ($payment->payment_status == 'COMPLETED') {
+        if ($payment->payment_status == 'Approved') {
+            Mail::html(
+                '<html>
+                    <body>
+                        Hi ' . $payment->customer_fname . ',<br/><br/>
+                        Great news! Your payment has been successfully processed, and we\'re thrilled to inform you that your budget website form has been activated.<br/><br/>
+                        You can review your payment details using the following link:<br/><br/>
+                        <a href="https://secure.ewaypayments.com/sharedpage/sharedpayment/Result?AccessCode=' . $payment->accesscode . '">Payment Details</a><br/><br/>
+                        Payment Details:<br/>
+                        <ul>
+                            <li>Name: ' . $payment->customer_fname . ' ' . $payment->customer_lname . '</li>
+                            <li>Payment Id: ' . $payment->payment_id . '</li>
+                            <li>Amount: ' . $payment->amount . ' AUD</li>
+                            <li>Payment Status: Approved</li>
+                            <li>Date: ' . date('Y-m-d h:i:s') . '</li>
+                        </ul>
+                        <p>Thank you for your commitment to our platform. Should you have any questions or need assistance, please don\'t hesitate to reach out to our support team.</p>
+                        <p>Wishing you continued success on your journey with us!</p><br/>
+                        Warm regards,<br/>
+                        Netstripes Team
+                    </body>
+                </html>',
+                function ($message) use ($payment) {
+                    $message->to($payment->email)->subject('Your Budget Website Form is Now Activated');
+                }
+            );
+
+        } else {
+            Mail::html(
+                '<html>
+                    <body>
+                        Hi ' . $payment->customer_fname . ',<br/><br/>
+                        We regret to inform you that your recent payment attempt was not successful. As a result, your budget website form could not be activated.<br/><br/>
+                        Payment Details:<br/>
+                        <ul>
+                            <li>Name: ' . $payment->customer_fname . ' ' . $payment->customer_lname . '</li>
+                            <li>Payment Id: ' . $payment->payment_id . '</li>
+                            <li>Amount: ' . $payment->amount . ' AUD</li>
+                            <li>Payment Status: Declined</li>
+                            <li>Date: ' . date('Y-m-d h:i:s') . '</li>
+                        </ul>
+                        <p>Please verify your payment information and try again. If you continue to experience issues, contact your bank or reach out to our support team for further assistance.</p>
+                        <p>We apologize for any inconvenience this may have caused and appreciate your understanding.</p><br/>
+                        Warm regards,<br/>
+                        Netstripes Team
+                    </body>
+                </html>',
+                function ($message) use ($payment) {
+                    $message->to($payment->email)->subject('Payment Declined - Action Required');
+                }
+            );
 
 
         }
 
-        //         Mail::html(
-//             '<html><body>Hi ' . $user->first_name . ' ' . $user->last_name . ',<br/><br/>
-//             Great news! Your payment has been successfully processed, and we\'re thrilled to inform you that you\'ve been upgraded to Level ' . $user_level . '. <br/><br/>
-//             Here are the added perks you can now enjoy:<br/>
 
-        //             <ul>
-//             <li>Full Futurise Foundation program access</li>
-//             <li>Automated Digital Strategy access</li>
-//             <li>Digital blueprint feature with an advisor</li>
-//             <li>Social Media Post Generation access</li>
-//             <li>Blog Post Generation access</li>
-//             </ul>
 
-        //             <br/>
-//             Payment Details: <br/>
-
-        // <ul>
-// <li>Name : ' . $user->first_name . ' ' . $user->last_name . '</li>
-// <li>Payment Id : ' . $payment->payment_id . '</li>
-// <li>Amount: ' . $payment->amount . 'AUD </li>
-// <li>Payment Status: ' . $status . '</li>
-// <li>Date: ' . date('Y-m-d h:i:s') . '</li>
-
-        // </ul>
-// <p>Thank you for your commitment to our platform and for choosing to level up your experience with us. Should you have any questions or need assistance, please don\'t hesitate to reach out to our support team.</p>
-// <p>Wishing you continued success on your journey with us!</p><br/>
-
-        // Warm regards <br/>Netstripes Team</body></html>',
-//             function ($message) use ($user, $user_level) {
-//                 $message->to($user->email)->subject('Congratulations! You\'ve Been Upgraded to Level ' . $user_level);
-//             }
-//         );
 
         return $payment->id;
 
