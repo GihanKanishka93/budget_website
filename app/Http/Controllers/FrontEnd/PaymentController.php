@@ -180,7 +180,8 @@ class PaymentController extends Controller
                             <li>Payment Status: Approved</li>
                             <li>Date: ' . date('Y-m-d h:i:s') . '</li>
                         </ul>
-                        <p>Thank you for your commitment to our platform. Should you have any questions or need assistance, please don\'t hesitate to reach out to our support team.</p>
+                        <p>We will now direct you to your Budget Website dashboard. Please carefully complete and submit the form, and we will develop your website within seven days of form submission.</p>
+                        <p>If you have any questions or need assistance, please don\'t hesitate to contact our support team.</p><br/>
                         <p>Wishing you continued success on your journey with us!</p><br/>
                         Warm regards,<br/>
                         Netstripes Team
