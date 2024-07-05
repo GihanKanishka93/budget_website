@@ -207,7 +207,6 @@ class PaymentController extends Controller
                             <li>Date: ' . date('Y-m-d h:i:s') . '</li>
                         </ul>
                         <p>Please verify your payment information and try again. If you continue to experience issues, contact your bank or reach out to our support team for further assistance.</p>
-                        <p>We apologize for any inconvenience this may have caused and appreciate your understanding.</p><br/>
                         Warm regards,<br/>
                         Netstripes Team
                     </body>
